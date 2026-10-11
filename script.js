@@ -364,7 +364,7 @@ function buildBohrModel(el) {
         group: group,
         angle: (j / count) * Math.PI * 2,
         radius: orbitRadius,
-        speed: 0.4 + Math.random() * 0.3
+        speed: 1,
       });
     }
 
@@ -379,7 +379,7 @@ function buildBohrModel(el) {
 
     shellData.forEach(shell => {
       shell.electrons.forEach(e => {
-        e.angle += 0.01 * e.speed;
+        e.angle += 0.012
         e.mesh.position.set(
           Math.cos(e.angle) * e.radius,
           Math.sin(e.angle) * e.radius,
