@@ -490,3 +490,76 @@ window.addEventListener("resize", () => {
     showDetail(todayEl);
   });
 })();
+/* ============================================================
+   SEARCH BAR
+   ============================================================ */
+(function setupSearch() {
+  const input = document.getElementById("search-input");
+  const results = document.getElementById("search-results");
+  if (!input || !results || typeof VALID_ELEMENTS === "undefined") return;
+
+  function renderResults(list) {
+    results.innerHTML = "";
+
+    if (list.length === 0) {
+      results.innerHTML = '<div class="search-no-result">No element found</div>';
+      results.classList.add("active");
+      return;
+    }
+
+    list.slice(0, 8).forEach(el => {
+      const cat = getCat(el.category);
+      const item = document.createElement("div");
+      item.className = "search-item";
+      item.innerHTML = `
+        <div class="si-symbol ${cat.cls}">${el.symbol}</div>
+        <div class="si-info">
+          <div class="si-name">${el.name}</div>
+          <div class="si-meta">Z = ${el.number} · ${el.atomicMass} u</div>
+        </div>
+      `;
+      item.addEventListener("click", () => {
+        input.value = "";
+        results.classList.remove("active");
+        showDetail(el);
+      });
+      results.appendChild(item);
+    });
+    results.classList.add("active");
+  }
+
+  input.addEventListener("input", () => {
+    const q = input.value.trim().toLowerCase();
+    if (!q) {
+      results.classList.remove("active");
+      return;
+    }
+
+    const matches = VALID_ELEMENTS.filter(el =>
+      el.name.toLowerCase().includes(q) ||
+      el.symbol.toLowerCase().includes(q) ||
+      String(el.number) === q
+    );
+
+    renderResults(matches);
+  });
+
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      const first = results.querySelector(".search-item");
+      if (first) first.click();
+    }
+    if (e.key === "Escape") {
+      input.value = "";
+      results.classList.remove("active");
+      input.blur();
+    }
+  });
+
+  /* Click ra ngoài → đóng dropdown */
+  document.addEventListener("click", e => {
+    if (!e.target.closest(".search-wrapper")) {
+      results.classList.remove("active");
+    }
+  });
+})();
