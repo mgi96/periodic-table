@@ -22,13 +22,30 @@ const CATEGORY_MAP = {
   "unknown, probably transition metal ": { cls: "cat-unknown", label: "Unknown" }
 };
 
-function getCat(catName) {
-  if (!catName) return { cls: "cat-unknown", label: "Unknown" };
-  const key = catName.toLowerCase().trim();
-  for (const k in CATEGORY_MAP) {
-    if (key.includes(k)) return CATEGORY_MAP[k];
-  }
-  return { cls: "cat-unknown", label: catName };
+function getCat(el) {
+  const z = el.number;
+
+  const HALOGENS = [9, 17, 35, 53, 85, 117];
+  const NOBLE_GASES = [2, 10, 18, 36, 54, 86, 118];
+  const ALKALI = [3, 11, 19, 37, 55, 87];
+  const ALKALINE = [4, 12, 20, 38, 56, 88];
+  const LANTHANIDES = [57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71];
+  const ACTINIDES = [89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103];
+
+  if (HALOGENS.includes(z))    return { cls: "cat-halogen",        label: "Halogen" };
+  if (NOBLE_GASES.includes(z)) return { cls: "cat-noble-gas",      label: "Noble Gas" };
+  if (ALKALI.includes(z))      return { cls: "cat-alkali-metal",   label: "Alkali Metal" };
+  if (ALKALINE.includes(z))    return { cls: "cat-alkaline-earth", label: "Alkaline Earth" };
+  if (LANTHANIDES.includes(z)) return { cls: "cat-lanthanide",     label: "Lanthanide" };
+  if (ACTINIDES.includes(z))   return { cls: "cat-actinide",       label: "Actinide" };
+
+  const key = (el.category || "").toLowerCase().trim();
+  if (key.includes("transition"))      return { cls: "cat-transition-metal", label: "Transition Metal" };
+  if (key.includes("post-transition")) return { cls: "cat-post-transition",  label: "Post-transition" };
+  if (key.includes("metalloid"))       return { cls: "cat-metalloid",        label: "Metalloid" };
+  if (key.includes("nonmetal"))        return { cls: "cat-nonmetal",         label: "Nonmetal" };
+
+  return { cls: "cat-unknown", label: "Unknown" };
 }
 
 const VALID_ELEMENTS = elements.filter(el => el.number >= 1 && el.number <= 118);
@@ -44,7 +61,7 @@ function getGridPos(el) {
 
 VALID_ELEMENTS.forEach(el => {
   const pos = getGridPos(el);
-  const cat = getCat(el.category);
+  const cat = getCat(el);
   const div = document.createElement("div");
   div.className = "element " + cat.cls;
   div.style.gridRow = pos.row;
@@ -93,7 +110,7 @@ function showDetail(el) {
   detailView.style.display = "block";
   window.scrollTo(0, 0);
 
-  const cat = getCat(el.category);
+  const cat = getCat(el);
 
   document.getElementById("d-badge").className = "element-badge " + cat.cls;
   document.getElementById("d-z").textContent = el.number;
@@ -508,7 +525,7 @@ window.addEventListener("resize", () => {
     }
 
     list.slice(0, 8).forEach(el => {
-      const cat = getCat(el.category);
+      const cat = getCat(el);
       const item = document.createElement("div");
       item.className = "search-item";
       item.innerHTML = `
