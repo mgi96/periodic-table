@@ -18,7 +18,8 @@
         <div class="eotd" id="eotd">
       <span class="eotd-label">✨ Element of the Day:</span>
       <span class="eotd-name" id="eotd-name">Loading...</span>
-    </div>
+    </div> 
+        <button class="quiz-btn" id="quiz-btn">🎯 Take Quiz</button>
   </header>
     <div class="search-wrapper">
     <input type="text" id="search-input" class="search-input" placeholder="🔍 Search element by name, symbol or number..." autocomplete="off">
@@ -75,7 +76,25 @@
     </div>
   </div>
 </div>
-
+<!-- ============ QUIZ MODAL ============ -->
+<div class="quiz-modal" id="quiz-modal">
+  <div class="quiz-content">
+    <button class="quiz-close" id="quiz-close">×</button>
+    <h2 class="quiz-title" id="quiz-title">🎯 Vòng 1</h2>
+    <div class="quiz-stats">
+      <span>Score: <strong id="quiz-score">0</strong></span>
+      <span>Streak: <strong id="quiz-streak">0</strong></span>
+      <span>Câu: <strong id="quiz-count">0/10</strong></span>
+    </div>
+    <p class="quiz-question" id="quiz-question">Loading...</p>
+    <div class="quiz-actions" id="quiz-actions">
+      <button class="quiz-answer true" id="quiz-true">✓ Đúng</button>
+      <button class="quiz-answer false" id="quiz-false">✗ Sai</button>
+    </div>
+    <div class="quiz-feedback" id="quiz-feedback"></div>
+    <button class="quiz-next" id="quiz-next" style="display:none;">Tiếp tục vòng 2 →</button>
+  </div>
+</div>
 <script src="data.js"></script>
 <script src="script.js"></script>
 <p style="text-align: center; color: #64748b; font-size: 0.85rem; margin-top: 24px; padding-bottom: 16px;">Created by <strong>mgi.96</strong></p></body>
