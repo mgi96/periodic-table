@@ -580,3 +580,183 @@ window.addEventListener("resize", () => {
     }
   });
 })();
+/* ============================================================
+   QUIZ: VÒNG 1 (10 câu) + VÒNG 2 (vô hạn)
+   6 dạng câu hỏi (hoán vị của Ký hiệu, Số hiệu, Tên)
+   ============================================================ */
+(function setupQuiz() {
+  const COMMON_Z = [
+    1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,
+    24,25,26,27,28,29,30,35,38,47,48,50,53,56,74,78,79,80,82,34
+  ];
+
+  const btn = document.getElementById("quiz-btn");
+  const modal = document.getElementById("quiz-modal");
+  const contentEl = document.querySelector(".quiz-content");
+  const closeBtn = document.getElementById("quiz-close");
+  const titleEl = document.getElementById("quiz-title");
+  const questionEl = document.getElementById("quiz-question");
+  const actionsEl = document.getElementById("quiz-actions");
+  const trueBtn = document.getElementById("quiz-true");
+  const falseBtn = document.getElementById("quiz-false");
+  const nextBtn = document.getElementById("quiz-next");
+  const scoreEl = document.getElementById("quiz-score");
+  const streakEl = document.getElementById("quiz-streak");
+  const countEl = document.getElementById("quiz-count");
+  const feedbackEl = document.getElementById("quiz-feedback");
+
+  if (!btn || !modal || typeof VALID_ELEMENTS === "undefined") return;
+
+  let score = 0, streak = 0, round = 1, questionNum = 0;
+  let currentQ = null;
+
+  const COMMON = VALID_ELEMENTS.filter(e => COMMON_Z.includes(e.number));
+  const RARE = VALID_ELEMENTS.filter(e => !COMMON_Z.includes(e.number));
+
+  function randomFrom(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+  }
+
+  function showVisual(isCorrect) {
+    const icon = document.createElement("div");
+    icon.className = "quiz-icon " + (isCorrect ? "correct" : "wrong");
+    icon.textContent = isCorrect ? "✓" : "✗";
+    contentEl.appendChild(icon);
+    setTimeout(() => icon.classList.add("show"), 10);
+    setTimeout(() => icon.remove(), 1000);
+
+    contentEl.classList.add(isCorrect ? "correct" : "wrong");
+    setTimeout(() => {
+      contentEl.classList.remove("correct");
+      contentEl.classList.remove("wrong");
+    }, 800);
+
+    if (isCorrect) {
+      for (let i = 0; i < 12; i++) {
+        const p = document.createElement("div");
+        p.className = "quiz-particle";
+        const angle = (i / 12) * Math.PI * 2;
+        const dist = 80 + Math.random() * 60;
+        p.style.setProperty("--px", Math.cos(angle) * dist + "px");
+        p.style.setProperty("--py", Math.sin(angle) * dist + "px");
+        p.style.background = ["#22c55e", "#38bdf8", "#facc15"][i % 3];
+        p.style.left = "50%";
+        p.style.top = "50%";
+        contentEl.appendChild(p);
+        setTimeout(() => p.remove(), 800);
+      }
+    }
+  }
+
+  function generateQuestion() {
+    questionNum++;
+    const pool = round === 1 ? COMMON : RARE;
+    const el = randomFrom(pool);
+    const isTrue = Math.random() < 0.5;
+    let statement, answer;
+
+    const type = Math.floor(Math.random() * 6);
+
+    if (type === 0) {
+      const fake = randomFrom(pool);
+      const num = isTrue ? el.number : fake.number;
+      statement = `Nguyên tố "${el.symbol}" có số hiệu nguyên tử là ${num}.`;
+      answer = isTrue;
+    } else if (type === 1) {
+      const fake = randomFrom(pool);
+      const sym = isTrue ? el.symbol : fake.symbol;
+      statement = `Nguyên tố có số hiệu ${el.number} có ký hiệu là "${sym}".`;
+      answer = isTrue;
+    } else if (type === 2) {
+      const fake = randomFrom(pool);
+      const name = isTrue ? el.name : fake.name;
+      statement = `"${el.symbol}" là nguyên tố ${name}.`;
+      answer = isTrue;
+    } else if (type === 3) {
+      const fake = randomFrom(pool);
+      const sym = isTrue ? el.symbol : fake.symbol;
+      statement = `Nguyên tố "${el.name}" có ký hiệu là "${sym}".`;
+      answer = isTrue;
+    } else if (type === 4) {
+      const fake = randomFrom(pool);
+      const name = isTrue ? el.name : fake.name;
+      statement = `Nguyên tố có số hiệu ${el.number} là ${name}.`;
+      answer = isTrue;
+    } else {
+      const fake = randomFrom(pool);
+      const num = isTrue ? el.number : fake.number;
+      statement = `Nguyên tố "${el.name}" có số hiệu nguyên tử là ${num}.`;
+      answer = isTrue;
+    }
+
+    currentQ = { statement, answer };
+    questionEl.textContent = statement;
+    feedbackEl.textContent = "";
+    feedbackEl.className = "quiz-feedback";
+    trueBtn.disabled = false;
+    falseBtn.disabled = false;
+    countEl.textContent = round === 1 ? `${questionNum}/10` : `${questionNum}`;
+  }
+
+  function checkAnswer(userSaysTrue) {
+    if (!currentQ) return;
+    trueBtn.disabled = true;
+    falseBtn.disabled = true;
+
+    const correct = userSaysTrue === currentQ.answer;
+    showVisual(correct);
+
+    if (correct) {
+      score++; streak++;
+      feedbackEl.textContent = "✓ Chính xác!";
+      feedbackEl.className = "quiz-feedback correct";
+    } else {
+      streak = 0;
+      feedbackEl.textContent = `✗ Sai! Đáp án: ${currentQ.answer ? "ĐÚNG" : "SAI"}`;
+      feedbackEl.className = "quiz-feedback wrong";
+    }
+
+    scoreEl.textContent = score;
+    streakEl.textContent = streak;
+
+    if (round === 1 && questionNum >= 10) {
+      setTimeout(() => {
+        questionEl.textContent = `🎉 Vòng 1 hoàn thành! Điểm: ${score}/10`;
+        feedbackEl.textContent = "";
+        actionsEl.style.display = "none";
+        nextBtn.style.display = "block";
+      }, 1500);
+      return;
+    }
+
+    setTimeout(generateQuestion, 1500);
+  }
+
+  btn.addEventListener("click", () => {
+    modal.classList.add("active");
+    score = 0; streak = 0; round = 1; questionNum = 0;
+    scoreEl.textContent = "0";
+    streakEl.textContent = "0";
+    titleEl.textContent = "🎯 Vòng 1";
+    actionsEl.style.display = "flex";
+    nextBtn.style.display = "none";
+    generateQuestion();
+  });
+
+  nextBtn.addEventListener("click", () => {
+    round = 2;
+    questionNum = 0;
+    titleEl.textContent = "🎯 Vòng 2 (vô hạn)";
+    actionsEl.style.display = "flex";
+    nextBtn.style.display = "none";
+    generateQuestion();
+  });
+
+  closeBtn.addEventListener("click", () => modal.classList.remove("active"));
+  modal.addEventListener("click", e => {
+    if (e.target === modal) modal.classList.remove("active");
+  });
+
+  trueBtn.addEventListener("click", () => checkAnswer(true));
+  falseBtn.addEventListener("click", () => checkAnswer(false));
+})();
