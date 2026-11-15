@@ -3,28 +3,22 @@
    ============================================================ */
 
 const CATEGORY_MAP = {
-  "alkali metal":            { cls: "cat-alkali-metal",     label: "Alkali Metal" },
-  "alkaline earth metal":    { cls: "cat-alkaline-earth",   label: "Alkaline Earth" },
-  "transition metal":        { cls: "cat-transition-metal", label: "Transition Metal" },
-  "post-transition metal":   { cls: "cat-post-transition",  label: "Post-transition" },
-  "metalloid":               { cls: "cat-metalloid",        label: "Metalloid" },
-  "diatomic nonmetal":       { cls: "cat-nonmetal",         label: "Nonmetal" },
-  "polyatomic nonmetal":     { cls: "cat-nonmetal",         label: "Nonmetal" },
-  "nonmetal":                { cls: "cat-nonmetal",         label: "Nonmetal" },
-  "halogen":                 { cls: "cat-halogen",          label: "Halogen" },
-  "noble gas":               { cls: "cat-noble-gas",        label: "Noble Gas" },
-  "lanthanide":              { cls: "cat-lanthanide",       label: "Lanthanide" },
-  "actinide":                { cls: "cat-actinide",         label: "Actinide" },
-  "unknown, probably transition metal": { cls: "cat-unknown", label: "Unknown" },
-  "unknown, probably post-transition metal": { cls: "cat-unknown", label: "Unknown" },
-  "unknown, probably metalloid": { cls: "cat-unknown", label: "Unknown" },
-  "unknown, predicted to be noble gas": { cls: "cat-unknown", label: "Unknown" },
-  "unknown, probably transition metal ": { cls: "cat-unknown", label: "Unknown" }
+  "alkali metal": { cls: "cat-alkali-metal", label: "Alkali Metal" },
+  "alkaline earth metal": { cls: "cat-alkaline-earth", label: "Alkaline Earth" },
+  "transition metal": { cls: "cat-transition-metal", label: "Transition Metal" },
+  "post-transition metal": { cls: "cat-post-transition", label: "Post-transition" },
+  "metalloid": { cls: "cat-metalloid", label: "Metalloid" },
+  "diatomic nonmetal": { cls: "cat-nonmetal", label: "Nonmetal" },
+  "polyatomic nonmetal": { cls: "cat-nonmetal", label: "Nonmetal" },
+  "nonmetal": { cls: "cat-nonmetal", label: "Nonmetal" },
+  "halogen": { cls: "cat-halogen", label: "Halogen" },
+  "noble gas": { cls: "cat-noble-gas", label: "Noble Gas" },
+  "lanthanide": { cls: "cat-lanthanide", label: "Lanthanide" },
+  "actinide": { cls: "cat-actinide", label: "Actinide" }
 };
 
 function getCat(el) {
   const z = el.number;
-
   const HALOGENS = [9, 17, 35, 53, 85, 117];
   const NOBLE_GASES = [2, 10, 18, 36, 54, 86, 118];
   const ALKALI = [3, 11, 19, 37, 55, 87];
@@ -32,29 +26,27 @@ function getCat(el) {
   const LANTHANIDES = [57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68, 69, 70, 71];
   const ACTINIDES = [89, 90, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 103];
 
-  if (HALOGENS.includes(z))    return { cls: "cat-halogen",        label: "Halogen" };
-  if (NOBLE_GASES.includes(z)) return { cls: "cat-noble-gas",      label: "Noble Gas" };
-  if (ALKALI.includes(z))      return { cls: "cat-alkali-metal",   label: "Alkali Metal" };
-  if (ALKALINE.includes(z))    return { cls: "cat-alkaline-earth", label: "Alkaline Earth" };
-  if (LANTHANIDES.includes(z)) return { cls: "cat-lanthanide",     label: "Lanthanide" };
-  if (ACTINIDES.includes(z))   return { cls: "cat-actinide",       label: "Actinide" };
+  if (HALOGENS.includes(z)) return { cls: "cat-halogen", label: "Halogen" };
+  if (NOBLE_GASES.includes(z)) return { cls: "cat-noble-gas", label: "Noble Gas" };
+  if (ALKALI.includes(z)) return { cls: "cat-alkali-metal", label: "Alkali Metal" };
+  if (ALKALINE.includes(z)) return { cls: "cat-alkaline-earth", label: "Alkaline Earth" };
+  if (LANTHANIDES.includes(z)) return { cls: "cat-lanthanide", label: "Lanthanide" };
+  if (ACTINIDES.includes(z)) return { cls: "cat-actinide", label: "Actinide" };
 
   const key = (el.category || "").toLowerCase().trim();
-  if (key.includes("transition"))      return { cls: "cat-transition-metal", label: "Transition Metal" };
-  if (key.includes("post-transition")) return { cls: "cat-post-transition",  label: "Post-transition" };
-  if (key.includes("metalloid"))       return { cls: "cat-metalloid",        label: "Metalloid" };
-  if (key.includes("nonmetal"))        return { cls: "cat-nonmetal",         label: "Nonmetal" };
-
+  if (key.includes("transition")) return { cls: "cat-transition-metal", label: "Transition Metal" };
+  if (key.includes("post-transition")) return { cls: "cat-post-transition", label: "Post-transition" };
+  if (key.includes("metalloid")) return { cls: "cat-metalloid", label: "Metalloid" };
+  if (key.includes("nonmetal")) return { cls: "cat-nonmetal", label: "Nonmetal" };
   return { cls: "cat-unknown", label: "Unknown" };
 }
 
 const VALID_ELEMENTS = elements.filter(el => el.number >= 1 && el.number <= 118);
-
 const table = document.getElementById("table");
 const legendEl = document.getElementById("legend");
 
 function getGridPos(el) {
-  if (el.number >= 57 && el.number <= 71) return { row: 9,  col: el.number - 57 + 3 };
+  if (el.number >= 57 && el.number <= 71) return { row: 9, col: el.number - 57 + 3 };
   if (el.number >= 89 && el.number <= 103) return { row: 10, col: el.number - 89 + 3 };
   return { row: el.period, col: el.group };
 }
@@ -66,28 +58,19 @@ VALID_ELEMENTS.forEach(el => {
   div.className = "element " + cat.cls;
   div.style.gridRow = pos.row;
   div.style.gridColumn = pos.col;
-  div.innerHTML = `
-    <span class="number">${el.number}</span>
-    <span class="symbol">${el.symbol}</span>
-    <span class="name">${el.name}</span>
-  `;
+  div.innerHTML = `<span class="number">${el.number}</span><span class="symbol">${el.symbol}</span><span class="name">${el.name}</span>`;
   div.addEventListener("click", () => showDetail(el));
   table.appendChild(div);
 });
 
 const LEGEND_ITEMS = [
-  ["cat-alkali-metal",     "Alkali Metal"],
-  ["cat-alkaline-earth",   "Alkaline Earth"],
-  ["cat-transition-metal", "Transition Metal"],
-  ["cat-post-transition",  "Post-transition"],
-  ["cat-metalloid",        "Metalloid"],
-  ["cat-nonmetal",         "Nonmetal"],
-  ["cat-halogen",          "Halogen"],
-  ["cat-noble-gas",        "Noble Gas"],
-  ["cat-lanthanide",       "Lanthanide"],
-  ["cat-actinide",         "Actinide"],
-  ["cat-unknown",          "Unknown"]
+  ["cat-alkali-metal", "Alkali Metal"], ["cat-alkaline-earth", "Alkaline Earth"],
+  ["cat-transition-metal", "Transition Metal"], ["cat-post-transition", "Post-transition"],
+  ["cat-metalloid", "Metalloid"], ["cat-nonmetal", "Nonmetal"], ["cat-halogen", "Halogen"],
+  ["cat-noble-gas", "Noble Gas"], ["cat-lanthanide", "Lanthanide"], ["cat-actinide", "Actinide"],
+  ["cat-unknown", "Unknown"]
 ];
+
 LEGEND_ITEMS.forEach(([cls, label]) => {
   const s = document.createElement("span");
   s.className = "legend-item " + cls;
@@ -95,7 +78,7 @@ LEGEND_ITEMS.forEach(([cls, label]) => {
   legendEl.appendChild(s);
 });
 
-const mainView   = document.getElementById("main-view");
+const mainView = document.getElementById("main-view");
 const detailView = document.getElementById("detail-view");
 let currentEl = null;
 
@@ -111,7 +94,6 @@ function showDetail(el) {
   window.scrollTo(0, 0);
 
   const cat = getCat(el);
-
   document.getElementById("d-badge").className = "element-badge " + cat.cls;
   document.getElementById("d-z").textContent = el.number;
   document.getElementById("d-symbol").textContent = el.symbol;
@@ -120,28 +102,19 @@ function showDetail(el) {
 
   document.getElementById("d-config").textContent = safe(el.electronConfiguration);
   document.getElementById("d-mass2").textContent = safe(el.atomicMass) + " u";
-
-  const en = el.electronegativity_pauling;
-  document.getElementById("d-en").textContent = en != null ? en : "—";
-
-  const ar = el.atomic_radius;
-  document.getElementById("d-ar").textContent = ar != null ? ar + " pm" : "—";
+  document.getElementById("d-en").textContent = el.electronegativity_pauling != null ? el.electronegativity_pauling : "—";
 
   const mass = parseFloat(el.atomicMass);
   const neutrons = (!isNaN(mass)) ? Math.round(mass) - el.number : null;
   document.getElementById("d-neutrons").textContent = neutrons != null ? neutrons : "—";
 
-  const about = safe(el.summary, "No description available.");
-  document.getElementById("d-about").textContent = about;
+  const ar = el.atomic_radius || el.atomic_radius_calculated || el.empirical_radius || el.van_der_waals_radius;
+  document.getElementById("d-ar").textContent = ar != null ? ar + " pm" : "—";
+  document.getElementById("d-about").textContent = safe(el.summary, "No description available.");
 
   const tagsEl = document.getElementById("d-tags");
   tagsEl.innerHTML = "";
-  const tagData = [
-    cat.label,
-    "Block " + (el.block || "?").toUpperCase(),
-    "Period " + el.period,
-    el.group ? "Group " + el.group : "—"
-  ];
+  const tagData = [cat.label, "Block " + (el.block || "?").toUpperCase(), "Period " + el.period, el.group ? "Group " + el.group : "—"];
   tagData.forEach(t => {
     const s = document.createElement("span");
     s.className = "tag";
@@ -168,6 +141,61 @@ document.getElementById("next-btn").addEventListener("click", () => {
   if (idx < VALID_ELEMENTS.length - 1) showDetail(VALID_ELEMENTS[idx + 1]);
 });
 
+/* ============================================================
+   SEARCH BAR
+   ============================================================ */
+(function setupSearch() {
+  const input = document.getElementById("search-input");
+  const results = document.getElementById("search-results");
+  if (!input || !results || typeof VALID_ELEMENTS === "undefined") return;
+
+  function renderResults(list) {
+    results.innerHTML = "";
+    if (list.length === 0) {
+      results.innerHTML = '<div class="search-no-result">No element found</div>';
+      results.classList.add("active");
+      return;
+    }
+    list.slice(0, 8).forEach(el => {
+      const cat = getCat(el);
+      const item = document.createElement("div");
+      item.className = "search-item";
+      item.innerHTML = `<div class="si-symbol ${cat.cls}">${el.symbol}</div><div class="si-info"><div class="si-name">${el.name}</div><div class="si-meta">Z = ${el.number} · ${el.atomicMass} u</div></div>`;
+      item.addEventListener("click", () => {
+        input.value = "";
+        results.classList.remove("active");
+        showDetail(el);
+      });
+      results.appendChild(item);
+    });
+    results.classList.add("active");
+  }
+
+  input.addEventListener("input", () => {
+    const q = input.value.trim().toLowerCase();
+    if (!q) { results.classList.remove("active"); return; }
+    const matches = VALID_ELEMENTS.filter(el => el.name.toLowerCase().includes(q) || el.symbol.toLowerCase().includes(q) || String(el.number) === q);
+    renderResults(matches);
+  });
+
+  input.addEventListener("keydown", e => {
+    if (e.key === "Enter") {
+      const first = results.querySelector(".search-item");
+      if (first) first.click();
+    }
+    if (e.key === "Escape") {
+      input.value = ""; results.classList.remove("active"); input.blur();
+    }
+  });
+
+  document.addEventListener("click", e => {
+    if (!e.target.closest(".search-wrapper")) results.classList.remove("active");
+  });
+})();
+
+/* ============================================================
+   3D BOHR MODEL
+   ============================================================ */
 let scene, camera, renderer, animationId;
 let shellData = [];
 
@@ -179,43 +207,22 @@ function disposeBohr() {
 }
 
 function getShellDistribution(z) {
-  /* Bảng tra cứu cho các nguyên tố có cấu hình electron ngoại lệ (bán bão hòa / bão hòa) */
   const EXCEPTIONS = {
-    24:  [2, 8, 13, 1],
-    29:  [2, 8, 18, 1],
-    41:  [2, 8, 18, 12, 1],
-    42:  [2, 8, 18, 13, 1],
-    44:  [2, 8, 18, 15, 1],
-    45:  [2, 8, 18, 16, 1],
-    46:  [2, 8, 18, 18],
-    47:  [2, 8, 18, 18, 1],
-    57:  [2, 8, 18, 18, 9, 2],
-    58:  [2, 8, 18, 19, 9, 2],
-    64:  [2, 8, 18, 25, 9, 2],
-    78:  [2, 8, 18, 32, 17, 1],
-    79:  [2, 8, 18, 32, 18, 1],
-    89:  [2, 8, 18, 32, 18, 9, 2],
-    90:  [2, 8, 18, 32, 18, 10, 2],
-    91:  [2, 8, 18, 32, 20, 9, 2],
-    92:  [2, 8, 18, 32, 21, 9, 2],
-    93:  [2, 8, 18, 32, 22, 9, 2],
-    96:  [2, 8, 18, 32, 25, 9, 2],
-    103: [2, 8, 18, 32, 32, 8, 3],
-    111: [2, 8, 18, 32, 32, 18, 1]
+    24: [2, 8, 13, 1], 29: [2, 8, 18, 1], 41: [2, 8, 18, 12, 1], 42: [2, 8, 18, 13, 1],
+    44: [2, 8, 18, 15, 1], 45: [2, 8, 18, 16, 1], 46: [2, 8, 18, 18], 47: [2, 8, 18, 18, 1],
+    57: [2, 8, 18, 18, 9, 2], 58: [2, 8, 18, 19, 9, 2], 64: [2, 8, 18, 25, 9, 2],
+    78: [2, 8, 18, 32, 17, 1], 79: [2, 8, 18, 32, 18, 1], 89: [2, 8, 18, 32, 18, 9, 2],
+    90: [2, 8, 18, 32, 18, 10, 2], 91: [2, 8, 18, 32, 20, 9, 2], 92: [2, 8, 18, 32, 21, 9, 2],
+    93: [2, 8, 18, 32, 22, 9, 2], 96: [2, 8, 18, 32, 25, 9, 2], 103: [2, 8, 18, 32, 32, 8, 3]
   };
 
-  if (EXCEPTIONS[z]) {
-    return EXCEPTIONS[z];
-  }
+  if (EXCEPTIONS[z]) return EXCEPTIONS[z];
 
   const orbitalOrder = [
-    { n: 1, type: "s", max: 2 }, { n: 2, type: "s", max: 2 }, { n: 2, type: "p", max: 6 },
-    { n: 3, type: "s", max: 2 }, { n: 3, type: "p", max: 6 }, { n: 4, type: "s", max: 2 },
-    { n: 3, type: "d", max: 10 }, { n: 4, type: "p", max: 6 }, { n: 5, type: "s", max: 2 },
-    { n: 4, type: "d", max: 10 }, { n: 5, type: "p", max: 6 }, { n: 6, type: "s", max: 2 },
-    { n: 4, type: "f", max: 14 }, { n: 5, type: "d", max: 10 }, { n: 6, type: "p", max: 6 },
-    { n: 7, type: "s", max: 2 }, { n: 5, type: "f", max: 14 }, { n: 6, type: "d", max: 10 },
-    { n: 7, type: "p", max: 6 }
+    { n: 1, max: 2 }, { n: 2, max: 2 }, { n: 2, max: 6 }, { n: 3, max: 2 }, { n: 3, max: 6 },
+    { n: 4, max: 2 }, { n: 3, max: 10 }, { n: 4, max: 6 }, { n: 5, max: 2 }, { n: 4, max: 10 },
+    { n: 5, max: 6 }, { n: 6, max: 2 }, { n: 4, max: 14 }, { n: 5, max: 10 }, { n: 6, max: 6 },
+    { n: 7, max: 2 }, { n: 5, max: 14 }, { n: 6, max: 10 }, { n: 7, max: 6 }
   ];
 
   const shellCounts = {};
@@ -229,11 +236,10 @@ function getShellDistribution(z) {
 
   const maxN = Math.max(...Object.keys(shellCounts).map(Number));
   const shells = [];
-  for (let n = 1; n <= maxN; n++) {
-    shells.push(shellCounts[n] || 0);
-  }
+  for (let n = 1; n <= maxN; n++) shells.push(shellCounts[n] || 0);
   return shells;
 }
+
 function makeOrbitControls(camera, domElement, target) {
   let isDown = false, px = 0, py = 0;
   let theta = 0, phi = Math.PI / 3, radius = 22;
@@ -246,17 +252,14 @@ function makeOrbitControls(camera, domElement, target) {
   }
   update();
 
-  domElement.addEventListener("mousedown", e => {
-    isDown = true; px = e.clientX; py = e.clientY;
-  });
+  domElement.addEventListener("mousedown", e => { isDown = true; px = e.clientX; py = e.clientY; });
   window.addEventListener("mouseup", () => isDown = false);
   window.addEventListener("mousemove", e => {
     if (!isDown) return;
-    const dx = e.clientX - px, dy = e.clientY - py;
-    px = e.clientX; py = e.clientY;
-    theta -= dx * 0.008;
-    phi   -= dy * 0.008;
+    theta -= (e.clientX - px) * 0.008;
+    phi -= (e.clientY - py) * 0.008;
     phi = Math.max(0.1, Math.min(Math.PI - 0.1, phi));
+    px = e.clientX; py = e.clientY;
     update();
   });
   domElement.addEventListener("wheel", e => {
@@ -267,61 +270,26 @@ function makeOrbitControls(camera, domElement, target) {
   }, { passive: false });
 
   domElement.addEventListener("touchstart", e => {
-    if (e.touches.length === 1) {
-      isDown = true;
-      px = e.touches[0].clientX;
-      py = e.touches[0].clientY;
-    }
+    if (e.touches.length === 1) { isDown = true; px = e.touches[0].clientX; py = e.touches[0].clientY; }
   });
   domElement.addEventListener("touchend", () => isDown = false);
   domElement.addEventListener("touchmove", e => {
     if (!isDown || e.touches.length !== 1) return;
-    const dx = e.touches[0].clientX - px;
-    const dy = e.touches[0].clientY - py;
-    px = e.touches[0].clientX;
-    py = e.touches[0].clientY;
-    theta -= dx * 0.01;
-    phi   -= dy * 0.01;
+    theta -= (e.touches[0].clientX - px) * 0.01;
+    phi -= (e.touches[0].clientY - py) * 0.01;
     phi = Math.max(0.1, Math.min(Math.PI - 0.1, phi));
+    px = e.touches[0].clientX; py = e.touches[0].clientY;
     update();
   });
-
-  return { update };
-}
-
-function makeNucleusTexture(charge) {
-  const canvas = document.createElement("canvas");
-  canvas.width = 1024;
-  canvas.height = 512;
-  const ctx = canvas.getContext("2d");
-
-  const grad = ctx.createLinearGradient(0, 0, 0, canvas.height);
-  grad.addColorStop(0, "#e2e8f0");
-  grad.addColorStop(0.5, "#cbd5e1");
-  grad.addColorStop(1, "#94a3b8");
-  ctx.fillStyle = grad;
-  ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-  ctx.fillStyle = "#0f172a";
-  ctx.font = "bold 180px 'Segoe UI', Arial, sans-serif";
-  ctx.textAlign = "center";
-  ctx.textBaseline = "middle";
-  ctx.fillText("+" + charge, canvas.width / 2, canvas.height / 2);
-
-  const texture = new THREE.CanvasTexture(canvas);
-  texture.needsUpdate = true;
-  return texture;
 }
 
 function buildBohrModel(el) {
   disposeBohr();
   const container = document.getElementById("bohr-container");
-  const w = container.clientWidth;
-  const h = container.clientHeight;
+  const w = container.clientWidth, h = container.clientHeight;
 
   scene = new THREE.Scene();
   camera = new THREE.PerspectiveCamera(50, w / h, 0.1, 1000);
-
   renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
   renderer.setSize(w, h);
   renderer.setPixelRatio(window.devicePixelRatio);
@@ -334,28 +302,33 @@ function buildBohrModel(el) {
 
   const nucleusRadius = 1.1 + Math.log10(el.number + 1) * 0.4;
   const nucleusGeo = new THREE.SphereGeometry(nucleusRadius, 48, 48);
-  const texture = makeNucleusTexture(el.number);
-  const nucleusMat = new THREE.MeshPhongMaterial({
-    map: texture,
-    shininess: 60
-  });
+  const nucleusMat = new THREE.MeshPhongMaterial({ color: 0xcbd5e1, emissive: 0x475569, shininess: 80 });
   const nucleus = new THREE.Mesh(nucleusGeo, nucleusMat);
   scene.add(nucleus);
+
+  const chargeCanvas = document.createElement("canvas");
+  chargeCanvas.width = 256; chargeCanvas.height = 128;
+  const cctx = chargeCanvas.getContext("2d");
+  cctx.fillStyle = "rgba(0,0,0,0)"; cctx.fillRect(0, 0, 256, 128);
+  cctx.fillStyle = "#38bdf8"; cctx.font = "bold 90px 'Segoe UI', Arial, sans-serif";
+  cctx.textAlign = "center"; cctx.textBaseline = "middle";
+  cctx.fillText("+" + el.number, 128, 64);
+  const chargeTexture = new THREE.CanvasTexture(chargeCanvas);
+  const chargeMat = new THREE.SpriteMaterial({ map: chargeTexture, transparent: true, depthTest: false });
+  const chargeSprite = new THREE.Sprite(chargeMat);
+  chargeSprite.scale.set(4, 2, 1);
+  chargeSprite.position.set(nucleusRadius + 2.2, nucleusRadius + 0.8, 0);
+  scene.add(chargeSprite);
 
   const shells = getShellDistribution(el.number);
   shellData = [];
 
   shells.forEach((count, i) => {
     const orbitRadius = nucleusRadius + 2 + i * 1.7;
-
     const curve = new THREE.EllipseCurve(0, 0, orbitRadius, orbitRadius, 0, 2 * Math.PI);
     const points = curve.getPoints(80);
     const geo = new THREE.BufferGeometry().setFromPoints(points);
-    const mat = new THREE.LineBasicMaterial({
-      color: 0x334155,
-      transparent: true,
-      opacity: 0.7
-    });
+    const mat = new THREE.LineBasicMaterial({ color: 0x334155, transparent: true, opacity: 0.7 });
     const orbit = new THREE.LineLoop(geo, mat);
     orbit.rotation.x = Math.PI / 2 + (i % 2 === 0 ? 0.35 : -0.35);
     orbit.rotation.y = i * 0.4;
@@ -364,11 +337,7 @@ function buildBohrModel(el) {
 
     const electrons = [];
     const eGeo = new THREE.SphereGeometry(0.24, 16, 16);
-    const eMat = new THREE.MeshPhongMaterial({
-      color: 0x38bdf8,
-      emissive: 0x0284c7,
-      shininess: 100
-    });
+    const eMat = new THREE.MeshPhongMaterial({ color: 0x38bdf8, emissive: 0x0284c7, shininess: 100 });
 
     for (let j = 0; j < count; j++) {
       const e = new THREE.Mesh(eGeo, eMat);
@@ -376,35 +345,21 @@ function buildBohrModel(el) {
       group.rotation.copy(orbit.rotation);
       group.add(e);
       scene.add(group);
-      electrons.push({
-        mesh: e,
-        group: group,
-        angle: (j / count) * Math.PI * 2,
-        radius: orbitRadius,
-        speed: 1,
-      });
+      electrons.push({ mesh: e, group: group, angle: (j / count) * Math.PI * 2, radius: orbitRadius, speed: 1 });
     }
-
     shellData.push({ electrons, orbitRadius });
   });
 
-  const target = new THREE.Vector3(0, 0, 0);
-  makeOrbitControls(camera, renderer.domElement, target);
+  makeOrbitControls(camera, renderer.domElement, new THREE.Vector3(0, 0, 0));
 
   function animate() {
     animationId = requestAnimationFrame(animate);
-
     shellData.forEach(shell => {
       shell.electrons.forEach(e => {
-        e.angle += 0.012
-        e.mesh.position.set(
-          Math.cos(e.angle) * e.radius,
-          Math.sin(e.angle) * e.radius,
-          0
-        );
+        e.angle += 0.015;
+        e.mesh.position.set(Math.cos(e.angle) * e.radius, Math.sin(e.angle) * e.radius, 0);
       });
     });
-
     renderer.render(scene, camera);
   }
   animate();
@@ -413,170 +368,59 @@ function buildBohrModel(el) {
 window.addEventListener("resize", () => {
   if (!renderer || !camera) return;
   const container = document.getElementById("bohr-container");
-  const w = container.clientWidth, h = container.clientHeight;
-  camera.aspect = w / h;
+  camera.aspect = container.clientWidth / container.clientHeight;
   camera.updateProjectionMatrix();
-  renderer.setSize(w, h);
+  renderer.setSize(container.clientWidth, container.clientHeight);
 });
 
 /* ============================================================
-   STARFIELD BACKGROUND (NÂNG CẤP)
+   STARFIELD & ELEMENT OF THE DAY
    ============================================================ */
 (function createStars() {
   const starfield = document.getElementById("starfield");
   if (!starfield) return;
-
-  /* Sao nhỏ - nhiều, lấp lánh */
-  const SMALL_STARS = 400;
   const fragment = document.createDocumentFragment();
-
-  for (let i = 0; i < SMALL_STARS; i++) {
+  for (let i = 0; i < 400; i++) {
     const star = document.createElement("div");
     star.className = "star";
     const size = Math.random() * 1.5 + 0.5;
-    star.style.width = size + "px";
-    star.style.height = size + "px";
-    star.style.left = Math.random() * 100 + "%";
-    star.style.top = Math.random() * 100 + "%";
+    star.style.width = size + "px"; star.style.height = size + "px";
+    star.style.left = Math.random() * 100 + "%"; star.style.top = Math.random() * 100 + "%";
     star.style.animationDuration = (Math.random() * 3 + 2) + "s";
     star.style.animationDelay = (Math.random() * 5) + "s";
     fragment.appendChild(star);
   }
-
-  /* Sao lớn - có glow, ít hơn */
-  const BIG_STARS = 30;
-  for (let i = 0; i < BIG_STARS; i++) {
+  for (let i = 0; i < 30; i++) {
     const star = document.createElement("div");
     star.className = "star big";
     const size = Math.random() * 2 + 2;
-    star.style.width = size + "px";
-    star.style.height = size + "px";
-    star.style.left = Math.random() * 100 + "%";
-    star.style.top = Math.random() * 100 + "%";
+    star.style.width = size + "px"; star.style.height = size + "px";
+    star.style.left = Math.random() * 100 + "%"; star.style.top = Math.random() * 100 + "%";
     star.style.animationDuration = (Math.random() * 4 + 3) + "s";
     star.style.animationDelay = (Math.random() * 5) + "s";
     fragment.appendChild(star);
   }
-
   starfield.appendChild(fragment);
 
-  /* Sao băng - thỉnh thoảng bay ngang */
-   function createShootingStar() {
+  function createShootingStar() {
     const s = document.createElement("div");
     s.className = "shooting-star";
-
-    s.style.top = Math.random() * 50 + "%";
-    s.style.left = "-150px";
-
+    s.style.top = Math.random() * 50 + "%"; s.style.left = "-150px";
     s.style.animationDuration = (Math.random() * 1.5 + 2) + "s";
-
-    const scale = Math.random() * 0.7 + 0.6;
-    s.style.transform = `scale(${scale})`;
-
+    s.style.transform = `scale(${Math.random() * 0.7 + 0.6})`;
     starfield.appendChild(s);
     setTimeout(() => s.remove(), 4000);
   }
-
-  setInterval(() => {
-    createShootingStar();
-  }, 30000);
+  setInterval(createShootingStar, 10000);
 })();
 
-/* ============================================================
-   ELEMENT OF THE DAY
-   ============================================================ */
 (function setElementOfTheDay() {
   const container = document.getElementById("eotd");
   const nameEl = document.getElementById("eotd-name");
   if (!container || !nameEl || typeof VALID_ELEMENTS === "undefined") return;
-
-  /* Tính số ngày từ 1/1/2020 → hôm nay */
-  const start = new Date(2020, 0, 1);
-  const now = new Date();
+  const start = new Date(2020, 0, 1), now = new Date();
   const daysPassed = Math.floor((now - start) / (1000 * 60 * 60 * 24));
-
-  /* Chọn nguyên tố theo modulo 118 */
-  const index = daysPassed % VALID_ELEMENTS.length;
-  const todayEl = VALID_ELEMENTS[index];
-
-  /* Hiển thị tên */
+  const todayEl = VALID_ELEMENTS[daysPassed % VALID_ELEMENTS.length];
   nameEl.innerHTML = `${todayEl.name} <span class="eotd-symbol">(${todayEl.symbol})</span>`;
-
-  /* Click → mở chi tiết */
-  container.addEventListener("click", () => {
-    showDetail(todayEl);
-  });
-})();
-/* ============================================================
-   SEARCH BAR
-   ============================================================ */
-(function setupSearch() {
-  const input = document.getElementById("search-input");
-  const results = document.getElementById("search-results");
-  if (!input || !results || typeof VALID_ELEMENTS === "undefined") return;
-
-  function renderResults(list) {
-    results.innerHTML = "";
-
-    if (list.length === 0) {
-      results.innerHTML = '<div class="search-no-result">No element found</div>';
-      results.classList.add("active");
-      return;
-    }
-
-    list.slice(0, 8).forEach(el => {
-      const cat = getCat(el);
-      const item = document.createElement("div");
-      item.className = "search-item";
-      item.innerHTML = `
-        <div class="si-symbol ${cat.cls}">${el.symbol}</div>
-        <div class="si-info">
-          <div class="si-name">${el.name}</div>
-          <div class="si-meta">Z = ${el.number} · ${el.atomicMass} u</div>
-        </div>
-      `;
-      item.addEventListener("click", () => {
-        input.value = "";
-        results.classList.remove("active");
-        showDetail(el);
-      });
-      results.appendChild(item);
-    });
-    results.classList.add("active");
-  }
-
-  input.addEventListener("input", () => {
-    const q = input.value.trim().toLowerCase();
-    if (!q) {
-      results.classList.remove("active");
-      return;
-    }
-
-    const matches = VALID_ELEMENTS.filter(el =>
-      el.name.toLowerCase().includes(q) ||
-      el.symbol.toLowerCase().includes(q) ||
-      String(el.number) === q
-    );
-
-    renderResults(matches);
-  });
-
-  input.addEventListener("keydown", e => {
-    if (e.key === "Enter") {
-      const first = results.querySelector(".search-item");
-      if (first) first.click();
-    }
-    if (e.key === "Escape") {
-      input.value = "";
-      results.classList.remove("active");
-      input.blur();
-    }
-  });
-
-  /* Click ra ngoài → đóng dropdown */
-  document.addEventListener("click", e => {
-    if (!e.target.closest(".search-wrapper")) {
-      results.classList.remove("active");
-    }
-  });
+  container.addEventListener("click", () => showDetail(todayEl));
 })();
