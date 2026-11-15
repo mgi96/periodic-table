@@ -315,7 +315,7 @@ function buildBohrModel(el) {
   cctx.fillStyle = gradient;
   cctx.fillRect(0, 0, 512, 256);
 
-  cctx.font = "bold 140px 'Segoe UI', Arial, sans-serif";
+  cctx.font = "bold 90px 'Segoe UI', Arial, sans-serif";
   cctx.textAlign = "center";
   cctx.textBaseline = "middle";
   cctx.fillStyle = "#0f172a"; 
