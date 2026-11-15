@@ -302,23 +302,36 @@ function buildBohrModel(el) {
 
   const nucleusRadius = 1.1 + Math.log10(el.number + 1) * 0.4;
   const nucleusGeo = new THREE.SphereGeometry(nucleusRadius, 48, 48);
-  const nucleusMat = new THREE.MeshPhongMaterial({ color: 0xcbd5e1, emissive: 0x475569, shininess: 80 });
+    /* Tạo Texture quả cầu có in chữ +Z */
+  const chargeCanvas = document.createElement("canvas");
+  chargeCanvas.width = 512; 
+  chargeCanvas.height = 256;
+  const cctx = chargeCanvas.getContext("2d");
+
+  const gradient = cctx.createRadialGradient(256, 128, 10, 256, 128, 256);
+  gradient.addColorStop(0, "#ffffff");
+  gradient.addColorStop(0.7, "#cbd5e1");
+  gradient.addColorStop(1, "#64748b");
+  cctx.fillStyle = gradient;
+  cctx.fillRect(0, 0, 512, 256);
+
+  cctx.font = "bold 140px 'Segoe UI', Arial, sans-serif";
+  cctx.textAlign = "center";
+  cctx.textBaseline = "middle";
+  cctx.fillStyle = "#0f172a"; 
+  cctx.fillText("+" + el.number, 256, 128);
+
+  const chargeTexture = new THREE.CanvasTexture(chargeCanvas);
+  
+  /* Tạo quả cầu và dán chữ lên */
+  const nucleusMat = new THREE.MeshPhongMaterial({ 
+    map: chargeTexture, 
+    shininess: 100 
+  });
   const nucleus = new THREE.Mesh(nucleusGeo, nucleusMat);
   scene.add(nucleus);
 
-  const chargeCanvas = document.createElement("canvas");
-  chargeCanvas.width = 256; chargeCanvas.height = 128;
-  const cctx = chargeCanvas.getContext("2d");
-  cctx.fillStyle = "rgba(0,0,0,0)"; cctx.fillRect(0, 0, 256, 128);
-  cctx.fillStyle = "#38bdf8"; cctx.font = "bold 90px 'Segoe UI', Arial, sans-serif";
-  cctx.textAlign = "center"; cctx.textBaseline = "middle";
-  cctx.fillText("+" + el.number, 128, 64);
-  const chargeTexture = new THREE.CanvasTexture(chargeCanvas);
-  const chargeMat = new THREE.SpriteMaterial({ map: chargeTexture, transparent: true, depthTest: false });
-  const chargeSprite = new THREE.Sprite(chargeMat);
-  chargeSprite.scale.set(4, 2, 1);
-  chargeSprite.position.set(nucleusRadius + 2.2, nucleusRadius + 0.8, 0);
-  scene.add(chargeSprite);
+  
 
   const shells = getShellDistribution(el.number);
   shellData = [];
