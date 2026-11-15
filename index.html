@@ -4,35 +4,45 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Interactive Periodic Table</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚛️</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚛️</text></svg>">
 <link rel="stylesheet" href="style.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 </head>
 <body>
+<!-- Nền sao -->
 <div id="starfield"></div>
-<!-- ============ MAIN TABLE VIEW ============ -->
+
+<!-- ============ MAIN TABLE VIEW (Giao diện chính) ============ -->
 <div id="main-view">
   <header>
     <h1>⚛️ Interactive Periodic Table</h1>
     <p class="subtitle">Click any element to view details and 3D Bohr model</p>
-        <div class="eotd" id="eotd">
+    <!-- Nguyên tố của ngày -->
+    <div class="eotd" id="eotd">
       <span class="eotd-label">✨ Element of the Day:</span>
       <span class="eotd-name" id="eotd-name">Loading...</span>
-    </div> 
+    </div>
   </header>
-    <div class="search-wrapper">
+
+  <!-- Thanh tìm kiếm -->
+  <div class="search-wrapper">
     <input type="text" id="search-input" class="search-input" placeholder="🔍 Search element by name, symbol or number..." autocomplete="off">
     <div class="search-results" id="search-results"></div>
   </div>
 
-
+  <!-- Chú thích màu -->
   <div class="legend" id="legend"></div>
+
+  <!-- Bảng tuần hoàn -->
   <div class="table-wrapper">
     <div class="periodic-table" id="table"></div>
   </div>
+
+  <!-- Tên tác giả -->
+  <p style="text-align: center; color: #64748b; font-size: 0.85rem; margin-top: 24px; padding-bottom: 16px;">Created by <strong>mgi.96</strong></p>
 </div>
 
-<!-- ============ DETAIL VIEW ============ -->
+<!-- ============ DETAIL VIEW (Trang chi tiết nguyên tố) ============ -->
 <div id="detail-view" style="display:none;">
   <header class="detail-header">
     <button id="back-btn" class="nav-btn">← Back to Table</button>
@@ -43,7 +53,7 @@
   </header>
 
   <div class="detail-content">
-    <!-- Left: element info -->
+    <!-- Khối thông tin bên trái -->
     <div class="info-card">
       <div class="element-badge" id="d-badge">
         <div class="badge-z" id="d-z">1</div>
@@ -53,24 +63,30 @@
       <div class="element-info">
         <h2 id="d-name">Hydrogen</h2>
         <div class="tags" id="d-tags"></div>
-                   <div class="props">
-              <div><span class="label">Configuration:</span> <span id="d-config">1s¹</span></div>
-              <div><span class="label">Atomic mass:</span> <span id="d-mass2">1.008 u</span></div>
-              <div><span class="label">Electronegativity:</span> <span id="d-en">—</span></div>
-              <div><span class="label">Atomic radius:</span> <span id="d-ar">—</span></div>
-              <div><span class="label">Neutrons:</span> <span id="d-neutrons">—</span></div>
-              <div class="about-block">
-                <span class="label">About:</span>
-                <p id="d-about">—</p>
-              </div>
-            </div>
+        <div class="props">
+          <div><span class="label">Configuration:</span> <span id="d-config">1s¹</span></div>
+          <div><span class="label">Atomic mass:</span> <span id="d-mass2">1.008 u</span></div>
+          <div><span class="label">Electronegativity:</span> <span id="d-en">—</span></div>
+          <div><span class="label">Atomic radius:</span> <span id="d-ar">—</span></div>
+          <div><span class="label">Neutrons:</span> <span id="d-neutrons">—</span></div>
+          <div class="about-block">
+            <span class="label">About:</span>
+            <p id="d-about">—</p>
+          </div>
+        </div>
       </div>
     </div>
-
-    <!-- Right: 3D Bohr model -->
+    
+    <!-- Khối mô hình 3D bên phải -->
     <div class="bohr-card">
       <div id="bohr-container"></div>
       <div class="bohr-label">Bohr model · drag to rotate · scroll to zoom</div>
     </div>
   </div>
 </div>
+
+<!-- Gọi file dữ liệu và file logic -->
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
